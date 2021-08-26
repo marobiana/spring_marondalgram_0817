@@ -26,16 +26,79 @@
 			<div class="col-lg-7">
 				
 				<!--  입력 상자  -->
-				<div class="upload-box mt-3">
+				<div class="border rounded mt-3">
 					<div>
 						<textarea class="form-control w-100 border-0 non-resize" rows=3 id="contentInput"></textarea>
 					</div>
 					<div class="d-flex justify-content-between m-2">
-						<input class="input-control" type="file" id="fileInput">
+						<input class="input-control d-none" type="file" id="fileInput">
+						<a href="#" id="imageUploadBtn"><i class="bi bi-image image-upload-icon"></i></a>
 						<button class="btn btn-sm btn-info" id="uploadBtn">업로드</button>
 					</div>
 				</div>
+				<!--  /입력 상자  -->
 				
+				<!-- 피드 -->
+				
+				<c:forEach  var="post" items="${postList }">
+				
+				<div class="card border rounded mt-3">
+					<!-- 타이틀 -->
+					<div class="d-flex justify-content-between p-2 border-bottom">
+						<div>
+							<img src="https://mblogthumb-phinf.pstatic.net/20150203_225/hkjwow_1422965971196EfkMV_JPEG/%C4%AB%C5%E5%C7%C1%BB%E7_31.jpg?type=w210" width="30">
+							${post.userName }
+						</div>
+						<div class="more-icon"><i class="bi bi-three-dots-vertical"></i></div>
+					</div>
+					<!--이미지 -->
+					<div>
+						<img src="${post.imagePath }" class="w-100">
+					</div>
+					<!-- 좋아요 -->
+					
+					<div class="m-2">
+						<i class="bi bi-heart heart-icon text-dark"></i>
+						<span class="middle-size ml-1"> 좋아요 11개 </span>
+					</div>
+					
+					<!--  content -->
+					<div class="middle-size m-2">
+						<b>${post.userName }</b> ${post.content }
+					</div>
+					
+					<!--  댓글 -->
+					
+					<div class="mt-2">
+						<div class=" border-bottom m-2">
+							<!-- 댓글 타이틀 -->
+							<div  class="middle-size">
+								댓글
+							</div>
+						</div>
+						
+						<!--  댓글  -->
+						<div class="middle-size m-2">
+							<div class="mt-1">
+								<b>asdf</b> 댓글이다 댓글 
+							</div>
+						</div>
+						
+						
+						<!-- 댓글 입력 -->
+						<div class="d-flex mt-2 border-top">
+							<input type="text" class="form-control border-0 " id="commentInput-${post.id }">
+							<button class="btn btn-info ml-2 commentBtn" data-post-id="${post.id }">게시</button>
+						</div>
+						
+					
+					</div>
+			
+				</div>
+				
+				
+				</c:forEach>
+				<!-- /피드 -->
 			</div>
 			
 		</section>
@@ -72,7 +135,7 @@
 					data:formData,
 					success:function(data) {
 						if(data.result == "success") {
-							alert("글쓰기 성공");
+							location.reload();
 						} else {
 							alert("글쓰기에 실패했습니다.");
 						}
@@ -84,6 +147,15 @@
 				
 			});		
 			
+			$("#imageUploadBtn").on("click", function() {
+				$("#fileInput").click();
+			});
+			
+			$(".commentBtn").on("click", function() {
+				var postId = $(this).data("post-id");
+				// $("#commentInput-1")
+				var comment = $("#commentInput-" + postId).val().trim();
+			});
 	
 		});			
 	</script>
