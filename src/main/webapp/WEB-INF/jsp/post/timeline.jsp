@@ -155,6 +155,28 @@
 				var postId = $(this).data("post-id");
 				// $("#commentInput-1")
 				var comment = $("#commentInput-" + postId).val().trim();
+				
+				if(comment == null || comment == "") {
+					alert("내용을 입력하세요");
+					return;
+				}
+				
+				$.ajax({
+					type:"post",
+					url:"/post/comment/create",
+					data:{"postId":postId, "content":comment},
+					success:function(data) {
+						if(data.result == "success") {
+							location.reload();
+						} else {
+							alert("댓글 작성 실패");
+						}
+					},
+					error:function(e) {
+						alert("error");
+					}
+					
+				});
 			});
 	
 		});			
