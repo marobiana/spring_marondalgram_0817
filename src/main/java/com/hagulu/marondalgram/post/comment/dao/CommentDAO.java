@@ -1,7 +1,11 @@
 package com.hagulu.marondalgram.post.comment.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import com.hagulu.marondalgram.post.comment.model.Comment;
 
 @Repository
 public interface CommentDAO {
@@ -11,22 +15,9 @@ public interface CommentDAO {
 			, @Param("userName") String userName
 			, @Param("content") String content);
 	
-
-}
-
-
-public class PostWithComment {
-	private Post post;
-	private List<Comment> commentList;
-	
+	public List<Comment> selectCommentByPostId(
+			@Param("postId") int postId);
 	
 }
-
-PostWithComment postComment = new PostWithComment();
-postComment.setPost(post);
-postComent.setCommentList(commentlist);
-
-list.add(postComment);
-
 
 

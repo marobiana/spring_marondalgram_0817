@@ -24,4 +24,23 @@
 			, now()
 		)
  	</insert>
+ 	
+ 	<select id="selectCommentByPostId" parameterType="int" 
+ 	resultType="com.hagulu.marondalgram.post.comment.model.Comment">
+
+		SELECT 
+			`id`
+			, `userId`
+ 			, `postId`
+ 			, `userName`
+ 			, `content`
+ 			, `createdAt`
+ 			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId}
+		ORDER BY `id` DESC
+ 	</select>
+ 	
 </mapper>

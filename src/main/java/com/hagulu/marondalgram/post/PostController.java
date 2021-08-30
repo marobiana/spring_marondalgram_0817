@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hagulu.marondalgram.post.bo.PostBO;
-import com.hagulu.marondalgram.post.model.Post;
+import com.hagulu.marondalgram.post.model.PostWithComments;
 
 @Controller
 @RequestMapping("/post")
@@ -20,7 +20,7 @@ public class PostController {
 	@GetMapping("/timeline")
 	public String timeline(Model model) {
 		
-		List<Post> postList = postBO.getPostList();
+		List<PostWithComments> postList = postBO.getPostList();
 		
 		model.addAttribute("postList", postList);
 		
