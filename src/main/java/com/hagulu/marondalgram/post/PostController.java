@@ -2,6 +2,9 @@ package com.hagulu.marondalgram.post;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,9 +21,13 @@ public class PostController {
 	private PostBO postBO;
 	
 	@GetMapping("/timeline")
-	public String timeline(Model model) {
+	public String timeline(
+			HttpServletRequest request
+			, Model model) {
 		
-		List<PostWithComments> postList = postBO.getPostList();
+		HttpSession session = request.getSession();
+		int userId = (Integer)session.getAttribute("userId");
+		List<PostWithComments> postList = postBO.getPostList(userId);
 		
 		model.addAttribute("postList", postList);
 		

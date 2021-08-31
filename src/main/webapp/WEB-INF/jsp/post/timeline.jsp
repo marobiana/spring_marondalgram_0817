@@ -58,7 +58,9 @@
 					<!-- 좋아요 -->
 					
 					<div class="m-2">
-						<i class="bi bi-heart heart-icon text-dark"></i>
+						<a href="#" class="likeBtn" data-post-id="${postWithComments.post.id }">
+							<i class="bi bi-heart heart-icon text-dark"></i>
+						</a>
 						<span class="middle-size ml-1"> 좋아요 11개 </span>
 					</div>
 					
@@ -172,6 +174,28 @@
 							location.reload();
 						} else {
 							alert("댓글 작성 실패");
+						}
+					},
+					error:function(e) {
+						alert("error");
+					}
+					
+				});
+			});
+			
+			$(".likeBtn").on("click", function(e) {
+				e.preventDefault();
+				var postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/like",
+					data:{"postId": postId},
+					success:function(data) {
+						if(data.result == "success") {
+							alert("좋아요 성공");							
+						} else {
+							alert("좋아요 실패");
 						}
 					},
 					error:function(e) {
