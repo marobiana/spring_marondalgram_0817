@@ -58,9 +58,17 @@
 					<!-- 좋아요 -->
 					
 					<div class="m-2">
-						<a href="#" class="likeBtn" data-post-id="${postWithComments.post.id }">
-							<i class="bi bi-heart heart-icon text-dark"></i>
-						</a>
+						<c:choose>
+							<c:when test="${postWithComments.like }" >
+								<i class="bi bi-heart-fill heart-icon text-danger" id="heartIcon-${postWithComments.post.id }"></i>
+							</c:when>
+							<c:otherwise>
+								<a href="#" class="likeBtn" data-post-id="${postWithComments.post.id }">
+									<i class="bi bi-heart heart-icon text-dark" id="heartIcon-${postWithComments.post.id }"></i>
+								</a>
+							</c:otherwise>
+						</c:choose>
+						
 						<span class="middle-size ml-1"> 좋아요 11개 </span>
 					</div>
 					
@@ -193,7 +201,18 @@
 					data:{"postId": postId},
 					success:function(data) {
 						if(data.result == "success") {
-							alert("좋아요 성공");							
+							
+							if($("#heartIcon-" + postId).hasClass("bi-heart")) {
+								$("#heartIcon-" + postId).removeClass("bi-heart");
+								$("#heartIcon-" + postId).addClass("bi-heart-fill");
+								
+								$("#heartIcon-" + postId).removeClass("text-dark");
+								$("#heartIcon-" + postId).addClass("text-danger");
+							} else {
+								
+							}
+							
+							
 						} else {
 							alert("좋아요 실패");
 						}
