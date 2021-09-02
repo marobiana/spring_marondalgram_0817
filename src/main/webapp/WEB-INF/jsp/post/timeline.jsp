@@ -49,7 +49,12 @@
 							<img src="https://mblogthumb-phinf.pstatic.net/20150203_225/hkjwow_1422965971196EfkMV_JPEG/%C4%AB%C5%E5%C7%C1%BB%E7_31.jpg?type=w210" width="30">
 							${postWithComments.post.userName }
 						</div>
-						<div class="more-icon"><i class="bi bi-three-dots-vertical"></i></div>
+						<div class="more-icon" >
+							<a class="text-dark moreBtn" href="#"  data-toggle="modal" data-target="#deleteModal" data-post-id=""> 
+								<i class="bi bi-three-dots-vertical"></i> 
+							</a>
+							
+						</div>
 					</div>
 					<!--이미지 -->
 					<div>
@@ -117,6 +122,19 @@
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 		
 	
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      
+	      <div class="modal-body text-center">
+	        <a href="#" data-post-id="">삭제하기</a>
+	      </div>
+	  
+	    </div>
+	  </div>
 	</div>
 	<script>
 	
@@ -238,8 +256,14 @@
 				
 				$.processLike(postId);
 			});
+			
+			$(".moreBtn").on("click", function() {
+				// postId를 모델에 삭제 버튼에 주입한다. 
+			});
 	
-		});			
+		});		
+	
+		
 	</script>
 </body>
 </html>
