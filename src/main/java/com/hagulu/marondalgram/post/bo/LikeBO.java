@@ -21,8 +21,24 @@ public class LikeBO {
 		}
 	}
 	
-	public int like(int postId, int userId) {
-		return likeDAO.insertLike(postId, userId);
+	
+	// 좋아요 상태가 되면 true, 좋아요 취소상태가 되면 false
+	public boolean like(int postId, int userId) {
+		
+		// 만약 해당 포스트에 좋아요가 되어 있다면, 좋아요 취소
+		if(this.existLike(postId, userId)) {
+			likeDAO.deleteLike(postId, userId);
+			return false;
+		} else  {  // 만약 해당 포스트에 좋아요가 안되어 있다면, 좋아요
+			likeDAO.insertLike(postId, userId);
+			return true;
+		}
 	}
+	
+	// 좋아요 갯수 
+	public int countLike(int postId) {
+		return likeDAO.selectCountLikeByPostId(postId);
+	}
+	
 
 }

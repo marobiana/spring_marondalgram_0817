@@ -53,23 +53,22 @@
 					</div>
 					<!--이미지 -->
 					<div>
-						<img src="${postWithComments.post.imagePath }" class="w-100">
+						<img src="${postWithComments.post.imagePath }" class="w-100 imageClick" data-post-id="${postWithComments.post.id }">
 					</div>
 					<!-- 좋아요 -->
 					
 					<div class="m-2">
+						<a href="#" class="likeBtn" data-post-id="${postWithComments.post.id }">
 						<c:choose>
 							<c:when test="${postWithComments.like }" >
-								<i class="bi bi-heart-fill heart-icon text-danger" id="heartIcon-${postWithComments.post.id }"></i>
+								<i class="bi bi-heart-fill heart-icon text-danger" data-status="like" id="heartIcon-${postWithComments.post.id }"></i>
 							</c:when>
 							<c:otherwise>
-								<a href="#" class="likeBtn" data-post-id="${postWithComments.post.id }">
-									<i class="bi bi-heart heart-icon text-dark" id="heartIcon-${postWithComments.post.id }"></i>
-								</a>
+								<i class="bi bi-heart heart-icon text-dark" id="heartIcon-${postWithComments.post.id }"></i>	
 							</c:otherwise>
 						</c:choose>
-						
-						<span class="middle-size ml-1"> 좋아요 11개 </span>
+						</a>
+						<span class="middle-size ml-1"> 좋아요 <span id="likeCount-${postWithComments.post.id }" >${postWithComments.likeCount }</span>개 </span>
 					</div>
 					
 					<!--  content -->
@@ -120,6 +119,41 @@
 	
 	</div>
 	<script>
+	
+	$.processLike = function(postId) {
+		$.ajax({
+			type:"get",
+			url:"/post/like",
+			data:{"postId": postId},
+			success:function(data) {
+				// 좋아요
+				if(data.like) {
+					
+					$("#heartIcon-" + postId).removeClass("bi-heart");
+					$("#heartIcon-" + postId).addClass("bi-heart-fill");
+					
+					$("#heartIcon-" + postId).removeClass("text-dark");
+					$("#heartIcon-" + postId).addClass("text-danger");
+				} else { // unlike
+					$("#heartIcon-" + postId).addClass("bi-heart");
+					$("#heartIcon-" + postId).removeClass("bi-heart-fill");
+					
+					$("#heartIcon-" + postId).addClass("text-dark");
+					$("#heartIcon-" + postId).removeClass("text-danger");
+				}
+				$("#likeCount-" + postId).text(data.likeCount);
+				
+				//location.reload();
+					
+			},
+			error:function(e) {
+				alert("error");
+			}
+			
+		});
+	};
+	
+	
 	$(document).ready(function() {
 			$("#uploadBtn").on("click", function() {
 				let content = $("#contentInput").val().trim();
@@ -195,33 +229,14 @@
 				e.preventDefault();
 				var postId = $(this).data("post-id");
 				
-				$.ajax({
-					type:"get",
-					url:"/post/like",
-					data:{"postId": postId},
-					success:function(data) {
-						if(data.result == "success") {
-							
-							if($("#heartIcon-" + postId).hasClass("bi-heart")) {
-								$("#heartIcon-" + postId).removeClass("bi-heart");
-								$("#heartIcon-" + postId).addClass("bi-heart-fill");
-								
-								$("#heartIcon-" + postId).removeClass("text-dark");
-								$("#heartIcon-" + postId).addClass("text-danger");
-							} else {
-								
-							}
-							
-							
-						} else {
-							alert("좋아요 실패");
-						}
-					},
-					error:function(e) {
-						alert("error");
-					}
-					
-				});
+				$.processLike(postId);
+				
+			});
+			
+			$(".imageClick").on("dblclick", function() {
+				var postId = $(this).data("post-id");
+				
+				$.processLike(postId);
 			});
 	
 		});			

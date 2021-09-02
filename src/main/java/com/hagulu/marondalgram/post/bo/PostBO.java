@@ -48,11 +48,13 @@ public class PostBO {
 			List<Comment> commentList = commentBO.getCommentListByPostId(post.getId());
 			
 			boolean isLike = likeBO.existLike(post.getId(), userId);
+			int likeCount = likeBO.countLike(post.getId());
 			
 			PostWithComments postWithComments = new PostWithComments();
 			postWithComments.setPost(post);
 			postWithComments.setCommentList(commentList);
 			postWithComments.setLike(isLike);
+			postWithComments.setLikeCount(likeCount);
 			
 			postWithCommentsList.add(postWithComments);
 		}

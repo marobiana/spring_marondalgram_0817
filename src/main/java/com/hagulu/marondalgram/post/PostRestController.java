@@ -52,24 +52,21 @@ public class PostRestController {
 	}
 	
 	@GetMapping("/like")
-	public Map<String, String> like(
+	public Map<String, Object> like(
 			@RequestParam("postId") int postId
 			, HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		int userId = (Integer)session.getAttribute("userId");
 		
-		int count = likeBO.like(postId, userId);
+		boolean isLike = likeBO.like(postId, userId);
+		int likeCount = likeBO.countLike(postId);
 		
-		Map<String, String> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
 		
-		if(count == 1) {
-			result.put("result", "success");
-		} else {
-			result.put("result", "fail");
-		}
+		result.put("like", isLike);
+		result.put("likeCount", likeCount);
 		
 		return result;
-		
 	}
 }
